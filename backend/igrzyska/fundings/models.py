@@ -10,7 +10,7 @@ class Funding(models.Model):
         related_name='fundings',
     )
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     # default soft_cap = (tokens_amount * token_price) / 2
     soft_cap = models.DecimalField(max_digits=12, decimal_places=4, null=True)
     tokens_amount = models.PositiveIntegerField()

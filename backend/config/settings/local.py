@@ -89,6 +89,7 @@ TEST_RUNNER = 'config.runner.PytestTestRunner'
 # CORS
 # ------------------------------------------------------------------------------
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '10.12.250.207']
 
 
 # Your local stuff: Below this line define 3rd party library settings
