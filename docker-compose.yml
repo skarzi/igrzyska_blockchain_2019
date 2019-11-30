@@ -37,30 +37,30 @@ services:
       - ./shared/templates:/app/shared/templates
       - ./docs:/docs
 
-  redis:
-    image: redis:3.0
+# redis:
+#   image: redis:3.0
 
-  celeryworker:
-    <<: *app
-    container_name: igrzyska-celeryworker
-    depends_on:
-      - redis
-      - db
-    ports: []
-    command: /start-celeryworker.sh
+# celeryworker:
+#   <<: *app
+#   container_name: igrzyska-celeryworker
+#   depends_on:
+#     - redis
+#     - db
+#   ports: []
+#   command: /start-celeryworker.sh
 
-  celerybeat:
-    <<: *app
-    container_name: igrzyska-celerybeat
-    depends_on:
-      - redis
-      - db
-    ports: []
-    command: /start-celerybeat.sh
+# celerybeat:
+#   <<: *app
+#   container_name: igrzyska-celerybeat
+#   depends_on:
+#     - redis
+#     - db
+#   ports: []
+#   command: /start-celerybeat.sh
 
-  flower:
-    <<: *app
-    container_name: igrzyska-flower
-    ports:
-      - "5555:5555"
-    command: /start-flower.sh
+# flower:
+#   <<: *app
+#   container_name: igrzyska-flower
+#   ports:
+#     - "5555:5555"
+#   command: /start-flower.sh
