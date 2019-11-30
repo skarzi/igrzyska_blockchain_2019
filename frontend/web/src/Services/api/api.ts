@@ -1,6 +1,7 @@
 import { ApisauceInstance, create, ApiResponse } from 'apisauce';
 
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
+import { GetFundResult } from './api.types';
 
 export class Api {
   apisauce: ApisauceInstance;
@@ -21,7 +22,7 @@ export class Api {
     });
   }
 
-  async submitFund(fund) {
+  async submitFund(fund): Promise<GetFundResult> {
     const response: ApiResponse<any> = await this.apisauce.post('/fundings/', fund);
 
     if (response.status === 201) {
@@ -30,5 +31,7 @@ export class Api {
         id: response.data.id,
       };
     }
+
+    return null;
   }
 }

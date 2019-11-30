@@ -12,6 +12,7 @@
 
 const routes = {
   ROOT: '/',
+  FUND: '/fund',
 };
 
 export default routes;

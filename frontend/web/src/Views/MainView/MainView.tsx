@@ -3,33 +3,29 @@ import { TextField, Grid, Button } from '@material-ui/core';
 import { observer } from 'mobx-react';
 
 import { useStores } from '../../Models/root-store';
+import routes from '../../Utils/routes';
 
 import styles from './MainView.module.scss';
 
-export const MainView = observer(() => {
-  const [name, setName] = React.useState('');
-  const [tokens, setTokens] = React.useState('');
-  const [tokenPrice, setTokenPrice] = React.useState('');
-  const [equity, setEquity] = React.useState('');
+export const MainView = observer(props => {
   const { fundStore } = useStores();
 
-  const tokensNumber = tokens !== '' ? parseInt(tokens, 10) : 0;
-  const tokenPriceNumber = tokenPrice !== '' ? parseInt(tokenPrice, 10) : 0;
+  const { tokens, tokenPrice } = fundStore.fund;
+
+  const tokensNumber = tokens !== '' && tokens !== null ? parseInt(tokens, 10) : 0;
+  const tokenPriceNumber = tokenPrice !== '' && tokenPrice !== null ? parseInt(tokenPrice, 10) : 0;
   const totalAmount = tokensNumber * tokenPriceNumber;
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    fundStore.submitFund({
-      name,
-      organisation: 1,
-      tokens_amount: tokens,
-      token_price: tokenPrice,
-    });
+    fundStore.submitFund();
   };
 
   if (fundStore.state === 'submitted') {
-    return <div>Done!!!</div>;
+    props.history.push(routes.FUND);
+
+    return null;
   }
 
   return (
@@ -40,32 +36,32 @@ export const MainView = observer(() => {
         <form onSubmit={handleSubmit}>
           <TextField
             label="Fund raising auction name"
-            value={name}
-            onChange={e => setName(e.target.value)}
+            value={fundStore.fund.name || ''}
+            onChange={e => fundStore.setFundName(e.target.value)}
             fullWidth
             style={{ marginBottom: 15 }}
           />
 
           <TextField
             label="How many tokens you want to sell"
-            value={tokens}
-            onChange={e => setTokens(e.target.value)}
+            value={fundStore.fund.tokens || ''}
+            onChange={e => fundStore.setFundTokens(e.target.value)}
             fullWidth
             style={{ marginBottom: 15 }}
           />
 
           <TextField
             label="Price per one token in PLN"
-            value={tokenPrice}
-            onChange={e => setTokenPrice(e.target.value)}
+            value={fundStore.fund.tokenPrice || ''}
+            onChange={e => fundStore.setFundTokenPrice(e.target.value)}
             fullWidth
             style={{ marginBottom: 15 }}
           />
 
           <TextField
             label="Amount of equity we are selling"
-            value={equity}
-            onChange={e => setEquity(e.target.value)}
+            value={fundStore.fund.equity || ''}
+            onChange={e => fundStore.setFundEquity(e.target.value)}
             fullWidth
             style={{ marginBottom: 30 }}
           />

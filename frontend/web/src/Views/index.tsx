@@ -5,12 +5,14 @@ import { BasicLayout } from 'Components/layouts';
 import routes from 'Utils/routes';
 
 import { MainView } from './MainView';
+import { FundView } from './FundView';
 
 function RootView() {
   return (
     <BasicLayout>
       <Switch>
-        <Route path={routes.ROOT} component={MainView} />
+        <Route exact path={routes.ROOT} component={MainView} />
+        <Route path={routes.FUND} component={FundView} />
       </Switch>
     </BasicLayout>
   );
