@@ -17,7 +17,7 @@
     "test": "truffle test --network ganache",
     "precoverage": "npm run clean",
     "coverage": "solidity-coverage",
-    "serve": "ganache-cli -e 1000000 -p 7545 > logs.txt",
+    "serve": "ganache-cli -e 1000000 -p 7545 > logs.txt"
   },
   "dependencies": {
     "dotenv": "^8.0.0",

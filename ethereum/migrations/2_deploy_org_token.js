@@ -10,7 +10,12 @@ module.exports = async (deployer) => {
     let data = JSON.parse(content);
 
     let orgTokenContract = globalConfig.getOrgTokenContract(artifacts);
-    await deployer.deploy(orgTokenContract);
+    await deployer.deploy(
+        orgTokenContract,
+        "TokenName",
+        "SYM",
+        18,
+    );
 
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({
         orgToken: orgTokenContract.address,
