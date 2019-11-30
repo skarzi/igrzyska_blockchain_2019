@@ -46,6 +46,10 @@ class GlobalConfig {
         return artifacts.require(`./${contractName}.sol`);
     }
 
+    getMigrationContract(artifacts) {
+        return this.getContract(artifacts, 'Migrations');
+    }
+
     getCrowdfundingContract(artifacts) {
         return this.getContract(artifacts, 'Crowdfunding');
     }
