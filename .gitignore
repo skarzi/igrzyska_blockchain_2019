@@ -353,3 +353,4 @@ backend/shared/media/*
 docker-compose.override.yml
 
 !bin
+.idea
