@@ -44,6 +44,7 @@ services:
       - "8546:8545"
 
   quorum:
+    container_name: quorum
     image: trufflesuite/ganache-cli:latest
     ports:
       - "8547:8545"
