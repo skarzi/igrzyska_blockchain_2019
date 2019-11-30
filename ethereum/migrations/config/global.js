@@ -17,7 +17,7 @@ class GlobalConfig {
 
     delay(ms) {
         return new Promise(res => setTimeout(res, ms));
-    } 
+    }
 
     async retryUntilSuc(callback) {
         let stop = 3;
@@ -44,6 +44,10 @@ class GlobalConfig {
 
     getContract(artifacts, contractName) {
         return artifacts.require(`./${contractName}.sol`);
+    }
+
+    getMigrationContract(artifacts) {
+        return this.getContract(artifacts, 'Migrations');
     }
 
     getOrgTokenContract(artifacts) {
