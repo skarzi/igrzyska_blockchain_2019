@@ -8,6 +8,7 @@ contract('OrgToken', () => {
             "TokenName",
             "SYM",
             18,
+            0x0,
         );
     });
 
