@@ -8,4 +8,8 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
 contract Crowdfunding is Ownable {
+    constructor() public
+    Ownable() {
+
+    }
 }

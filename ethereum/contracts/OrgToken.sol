@@ -12,7 +12,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
 contract OrgToken is ERC20Detailed, ERC20, Ownable {
-    address backend;
+    address public backend;
 
     modifier onlyBroker() { require(true == true, "Message"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
@@ -23,7 +23,8 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         uint8 _decimals,
         address _backend
     ) public
-    ERC20Detailed(_name, _symbol, _decimals) {
+    ERC20Detailed(_name, _symbol, _decimals)
+    Ownable() {
         backend = _backend;
     }
 
