@@ -14,6 +14,7 @@ module.exports = async (deployer) => {
         "TokenName",
         "SYM",
         18,
+        0x0,
     );
 
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({
