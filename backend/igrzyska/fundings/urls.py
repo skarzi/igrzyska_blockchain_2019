@@ -9,4 +9,7 @@ app_name = 'fundings'
 router = routers.SimpleRouter()
 router.register('', views.FundingModelViewSet, base_name='fundings')
 
-urlpatterns = router.urls
+urlpatterns = (
+    url(r'^entries/', views.FundingEntryView.as_view(), name='entry'),
+    *router.urls,
+)
