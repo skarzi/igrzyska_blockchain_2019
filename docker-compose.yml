@@ -37,20 +37,33 @@ services:
       - ./shared/templates:/app/shared/templates
       - ./docs:/docs
 
-  eth:
-    container_name: eth
+  eth-node:
+    container_name: eth-node
+    image: trufflesuite/ganache-cli:latest
+    volumes:
+      - ./ethereum/:/ethereum/
+    ports:
+      - "8545:8545"
+
+  quorum-node:
+    container_name: quorum-node
     image: trufflesuite/ganache-cli:latest
     ports:
-      - "7545:8545"
+      - "8546:8545"
 
+  eth:
+    container_name: eth
+    image: node:11.0
+    volumes:
+      - ./ethereum/:/ethereum/
+    entrypoint: '/ethereum/start.sh'
 
   quorum:
     container_name: quorum
-    image: trufflesuite/ganache-cli:latest
-    ports:
-      - "7546:8545"
+    image: node:11.0
     volumes:
       - ./quorum/:/quorum/
+    entrypoint: '/qourum/start.sh'
 
 # redis:
 #   image: redis:3.0
