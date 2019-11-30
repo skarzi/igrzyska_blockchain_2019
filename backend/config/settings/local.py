@@ -75,20 +75,21 @@ INSTALLED_APPS += [
 # ------------------------------------------------------------------------------
 # TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 TEST_RUNNER = 'config.runner.PytestTestRunner'
-AUTHENTICATION_BACKENDS += ['django_webtest.backends.WebtestUserBackend',]
+# AUTHENTICATION_BACKENDS += ['django_webtest.backends.WebtestUserBackend',]
 
 
-MIDDLEWARE += ['django_webtest.middleware.WebtestUserMiddleware',]
+# MIDDLEWARE += ['django_webtest.middleware.WebtestUserMiddleware',]
 
 
-REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += (
-    'config.webtest.WebtestAuthentication',
-)
+# REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += (
+#     'config.webtest.WebtestAuthentication',
+# )
 
 
 # CORS
 # ------------------------------------------------------------------------------
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '10.12.250.207']
 
 
 # Your local stuff: Below this line define 3rd party library settings

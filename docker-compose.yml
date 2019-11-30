@@ -37,6 +37,19 @@ services:
       - ./shared/templates:/app/shared/templates
       - ./docs:/docs
 
+  eth:
+    container_name: eth
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - "7545:8545"
+
+
+  quorum:
+    container_name: quorum
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - "7546:8545"
+
 # redis:
 #   image: redis:3.0
 
