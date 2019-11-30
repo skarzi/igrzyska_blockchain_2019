@@ -75,15 +75,15 @@ INSTALLED_APPS += [
 # ------------------------------------------------------------------------------
 # TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 TEST_RUNNER = 'config.runner.PytestTestRunner'
-AUTHENTICATION_BACKENDS += ['django_webtest.backends.WebtestUserBackend',]
+# AUTHENTICATION_BACKENDS += ['django_webtest.backends.WebtestUserBackend',]
 
 
-MIDDLEWARE += ['django_webtest.middleware.WebtestUserMiddleware',]
+# MIDDLEWARE += ['django_webtest.middleware.WebtestUserMiddleware',]
 
 
-REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += (
-    'config.webtest.WebtestAuthentication',
-)
+# REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += (
+#     'config.webtest.WebtestAuthentication',
+# )
 
 
 # CORS

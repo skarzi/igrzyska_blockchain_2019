@@ -47,12 +47,12 @@ THIRD_PARTY_APPS = [
     'health_check',
     'health_check.db',
     'health_check.cache',
-    'health_check.contrib.psutil', 
+    'health_check.contrib.psutil',
     'health_check.contrib.celery',              # create simple task in all queues and wait 3sec
     #'health_check.storage',                    # save and delete file in storage
     #'health_check.contrib.s3boto_storage',     # requires boto and S3BotoStorage backend
     #'health_check.contrib.rabbitmq',           # requires RabbitMQ broker
-    
+
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -321,12 +321,9 @@ CELERYD_TASK_SOFT_TIME_LIMIT = 60
 
 # DJANGO REST FRAMEWORK
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    'DEFAULT_PERMISSION_CLASSES': (),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication'
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
