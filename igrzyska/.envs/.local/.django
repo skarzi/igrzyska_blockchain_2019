@@ -1,0 +1,35 @@
+# PostgreSQL
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+CONN_MAX_AGE=60
+
+
+# General settings
+DJANGO_READ_DOT_ENV_FILE=False
+DJANGO_ADMIN_URL=
+DJANGO_SETTINGS_MODULE=config.settings.local
+
+
+# Settings module for tests
+DJANGO_SETTINGS_MODULE_TEST=config.settings.test
+DJANGO_SECRET_KEY=u5|5ArJEJaT?5^63;O)BXpV}a!wO?^6vyG9Vj6#t-Erd#<V.qa
+DJANGO_ALLOWED_HOSTS=*
+
+
+
+
+
+# Celery
+CELERY_BROKER_URL=redis://redis:6379
+
+
+# Django Cache
+REDIS_URL=redis://redis:6379
+
+
+# Flower
+CELERY_FLOWER_USER=flower_user
+CELERY_FLOWER_PASSWORD=flower_password
+
+
+

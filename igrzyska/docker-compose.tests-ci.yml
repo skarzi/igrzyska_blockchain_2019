@@ -1,0 +1,19 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:11.6
+    env_file:
+      - .envs/.local/.postgres
+  
+  app:
+    container_name: igrzyska-test
+    command: runcitest
+    image: 10clouds/igrzyska-backend:${GIT_COMMIT}
+    depends_on:
+      - db
+    env_file:
+      - .envs/.local/.django
+      - .envs/.local/.postgres
+    environment:
+      - DJANGO_SETTINGS_MODULE_TEST=config.settings.test
