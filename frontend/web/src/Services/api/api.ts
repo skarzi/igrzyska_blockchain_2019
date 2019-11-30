@@ -1,8 +1,6 @@
 import { ApisauceInstance, create, ApiResponse } from 'apisauce';
 
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
-import { getGeneralApiProblem } from './api-problem';
-import * as Types from './api.types';
 
 export class Api {
   apisauce: ApisauceInstance;
@@ -23,29 +21,14 @@ export class Api {
     });
   }
 
-  async getUsers(): Promise<Types.GetUsersResult> {
-    const response: ApiResponse<any> = await this.apisauce.get('/users');
+  async submitFund(fund) {
+    const response: ApiResponse<any> = await this.apisauce.post('/fundings/', fund);
 
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response);
-      if (problem) return problem;
-    }
-
-    const convertUser = (raw: Types.User) => {
+    if (response.status === 201) {
       return {
-        id: raw.id,
-        name: raw.name,
-        username: raw.username,
-        email: raw.email,
+        kind: 'ok',
+        id: response.data.id,
       };
-    };
-
-    try {
-      const rawUsers = response.data;
-      const resultUsers: Types.User[] = rawUsers.map(convertUser);
-      return { kind: 'ok', users: resultUsers };
-    } catch {
-      return { kind: 'bad-data' };
     }
   }
 }

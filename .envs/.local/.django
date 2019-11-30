@@ -16,9 +16,6 @@ DJANGO_SECRET_KEY=u5|5ArJEJaT?5^63;O)BXpV}a!wO?^6vyG9Vj6#t-Erd#<V.qa
 DJANGO_ALLOWED_HOSTS=*
 
 
-
-
-
 # Celery
 CELERY_BROKER_URL=redis://redis:6379
 

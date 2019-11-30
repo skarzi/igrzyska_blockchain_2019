@@ -10,14 +10,21 @@ class Funding(models.Model):
         related_name='fundings',
     )
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    # (tokens_amount * token_price) / 2
-    soft_cap = models.DecimalField(max_digits=12, decimal_places=2, null=True)
+    description = models.TextField(blank=True)
+    # default soft_cap = (tokens_amount * token_price) / 2
+    soft_cap = models.DecimalField(max_digits=12, decimal_places=4, null=True)
     tokens_amount = models.PositiveIntegerField()
-    token_price = models.DecimalField(max_digits=12, decimal_places=2)
+    token_price = models.DecimalField(max_digits=12, decimal_places=4)
 
     def __str__(self):
-        return f''
+        return f'{self.name} ({self.soft_cap}$)'
+
+    @property
+    def collected_amount(self):
+        return sum(
+            entry.token_price * entry.tokens_amount
+            for entry in self.entries.all()
+        )
 
 
 class FundingEntry(models.Model):
@@ -33,4 +40,9 @@ class FundingEntry(models.Model):
         related_name='funding_entries',
     )
     tokens_amount = models.PositiveIntegerField()
-    token_price = models.DecimalField(max_digits=12, decimal_places=2)
+    token_price = models.DecimalField(max_digits=12, decimal_places=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Funding Entries'
+        ordering = ('-created_at',)
