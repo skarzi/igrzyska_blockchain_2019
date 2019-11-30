@@ -3,12 +3,12 @@ const fs = require('fs');
 const globalConfig = require('./config/global');
 
 
-module.exports = async function(deployer) {
+module.exports = async (deployer) => {
     console.log('Migrations started!');
 
     let fileExists = fs.existsSync(globalConfig.deploymentFile);
-    let data;
-    
+    let data = {};
+
     let migrationContract = globalConfig.getMigrationContract(artifacts);
     await deployer.deploy(migrationContract);
 
