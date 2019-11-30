@@ -1,3 +1,9 @@
 from django.contrib import admin
+from igrzyska.organisations.models import Organisation
 
-# Register your models here.
+
+class OrganisationAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Organisation, OrganisationAdmin)
