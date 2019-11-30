@@ -7,12 +7,11 @@ module.exports = async (deployer) => {
     console.log('Deploying crowdfunding!');
 
     let content = fs.readFileSync(globalConfig.deploymentFile);
-    let data = JSON.parse(content);
 
-    let orgTokenContract = globalConfig.getOrgTokenContract(artifacts);
-    await deployer.deploy(orgTokenContract);
+    let crowdfundingContract = globalConfig.getCrowdfundingContract(artifacts);
+    await deployer.deploy(crowdfundingContract);
 
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({
-        orgToken: orgTokenContract.address,
+        crowdfunding: crowdfundingContract.address,
     }));
 };

@@ -17,7 +17,7 @@ class GlobalConfig {
 
     delay(ms) {
         return new Promise(res => setTimeout(res, ms));
-    } 
+    }
 
     async retryUntilSuc(callback) {
         let stop = 3;
@@ -46,8 +46,8 @@ class GlobalConfig {
         return artifacts.require(`./${contractName}.sol`);
     }
 
-    getOrgTokenContract(artifacts) {
-        return this.getContract(artifacts, 'OrgToken');
+    getCrowdfundingContract(artifacts) {
+        return this.getContract(artifacts, 'Crowdfunding');
     }
 }
 
