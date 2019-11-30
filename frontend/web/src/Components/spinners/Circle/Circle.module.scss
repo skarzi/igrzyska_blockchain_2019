@@ -1,0 +1,51 @@
+@import '~Styles/helpers';
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.circle {
+  width: $loading-default-size;
+  height: $loading-default-size;
+  margin: 60px auto;
+
+  &::before {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-top: 2px solid $jagged-ice;
+    border-right: 2px solid $jagged-ice;
+    border-bottom: 2px solid $jagged-ice;
+    border-left: 2px solid transparent;
+    border-radius: 50%;
+    content: '';
+    transform: translateZ(0);
+    animation: load8 0.8s infinite linear;
+  }
+
+  &.compact {
+    width: 15px;
+    height: 15px;
+  }
+
+  &.large {
+    width: 60px;
+    height: 60px;
+    border-width: 6px;
+  }
+}
+
+@keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

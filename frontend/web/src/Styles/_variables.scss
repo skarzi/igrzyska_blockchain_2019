@@ -1,0 +1,28 @@
+// NOTE: mobile size (320px) is used by default with the mobile-first approach
+$size-thresholds: (
+  wide: 1920px,
+  desktop: 1366px,
+  tablet: 768px,
+  mobile: 320px,
+  tablet-fix: 1024px,
+  mobile-fix: 375px,
+);
+
+// font stacks
+$sans-serif: Helvetica, Roboto, Arial, sans-serif;
+$text-font: Helvetica, $sans-serif;
+
+// z-index
+$footer-z-index: 50;
+$popup-z-index: 1000;
+
+// sizes
+$content-width: 92.68%;
+$wide-content-width: 88.64%;
+
+$mobile-content-padding: 20px;
+$tablet-content-padding: 31px;
+$desktop-content-padding: 50px;
+$wide-content-padding: 110px;
+
+$loading-default-size: 24px;

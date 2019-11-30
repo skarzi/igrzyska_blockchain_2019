@@ -1,0 +1,155 @@
+@import 'variables';
+@import 'colors';
+
+/////////////////////////////
+//
+//    1rem means font-size on <html> element. default font size is 16px for most
+//    browsers. e.g. usage:
+//
+//       p {
+//           padding: rem(4px);
+//       }
+//
+//    It means: 4px padding for default font-size, but be elastic, if user use
+//    custom font size. if user set <html> font size to 20px <p> padding will
+//    be 5px.
+//
+@function rem($value-in-px) {
+  @return 1rem * ($value-in-px / 16px);
+}
+
+/////////////////////////////
+//
+//    1) Returns a responsive value that depends on viewport width.
+//       This example will create a padding that has minimum value of 20px
+//       and will scale up proportionally to viewport width.
+//       Second argument is responsible for setting fixed viewport width
+//       to use in the calculations.
+//
+//          div {
+//              padding-bottom: vw(20px, tablet);
+//          }
+//
+//    2) You can also use custom value to calculate ratio instead of existing
+//       breakpoints:
+//
+//          div {
+//              padding-bottom: vw(20px, 1000px);
+//          }
+//
+//    3) You may also want to use percentage value to calculate width based
+//       on div's parent width instead of full viewport width:
+//
+//          div {
+//              padding-bottom: vw(20px, tablet, true);
+//          }
+//
+//    NOTE:
+//    This helper can only be applied to rules that, when used with responsive
+//    unit (vw or %), depend on element width: margin, padding, width
+//
+//    More info: http://andyshora.com/css-image-container-padding-hack.html
+//
+@function vw($width, $breakpoint, $use-percentage: false) {
+  $ratio: 0;
+  @if type-of($breakpoint) == string {
+    $ratio: $width / map-get($size-thresholds, $breakpoint);
+  } @else {
+    $ratio: $width / $breakpoint;
+  }
+  @if $use-percentage == true {
+    @return $ratio * 100%;
+  } @else {
+    @return $ratio * 100vw;
+  }
+}
+
+@mixin respond-from($breakpoint) {
+  @if type-of($breakpoint) == string {
+    @media screen and (min-width: map-get($size-thresholds, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @media screen and (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+// Note: respond-from() mixin is prefered!
+// Only use this when targeting selectors that inherit values for higher
+// resolutions from other selectors, eg.
+//
+//  <span class="first second" />
+//
+//  .first {
+//     font-size: 16px;
+//
+//      @include respond-from(tablet) {
+//          font-size: 20px;
+//      }
+//  }
+//
+//  .second {
+//      @include respond-up-to(tablet) {
+//          font-size: 18px;
+//      }
+//
+//      // tablet size will be inherited from .first
+//  }
+//
+@mixin respond-up-to($breakpoint) {
+  @if type-of($breakpoint) == string {
+    @media screen and (max-width: map-get($size-thresholds, $breakpoint) - 1) {
+      @content;
+    }
+  } @else {
+    @media screen and (max-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+// @mixin backdrop($transparency) {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   z-index: 1;
+//   background-color: rgba(0, 0, 0, $transparency);
+//   width: 100%;
+//   height: 100%;
+// }
+
+// @mixin horizontal-rule($height: 3px, $s1: 5%, $s2: 35%, $s3: 65%, $s4: 95%) {
+//   opacity: 0.52;
+//   border: 0;
+//   background: linear-gradient(
+//     to right,
+//     rgba(#c3b9a0, 0) #{$s1},
+//     #c3b9a0 #{$s2},
+//     #c3b9a0 #{$s3},
+//     rgba(#c3b9a0, 0) #{$s4}
+//   );
+//   width: 100%;
+//   height: rem($height);
+// }
+
+// @mixin vertical-rule($width: 3px, $s1: 0%, $s2: 13%, $s3: 70%, $s4: 95%) {
+//   border: 0;
+//   background: linear-gradient(
+//     to top,
+//     rgba(#c3b9a0, 0) #{$s1},
+//     #c3b9a0 #{$s2},
+//     #c3b9a0 #{$s3},
+//     rgba(#c3b9a0, 0) #{$s4}
+//   );
+//   width: rem($width);
+//   height: 100%;
+// }
+
+// %default-outline {
+//   outline-offset: -2px;
+//   outline-width: 5px;
+//   outline-style: auto;
+//   outline-color: rgb(77, 144, 254);
+// }
