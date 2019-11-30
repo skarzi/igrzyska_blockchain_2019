@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class OrganisationsConfig(AppConfig):
-    name = 'organisations'
+    name = 'igrzyska.organisations'
+    verbose_name = 'Organisations'

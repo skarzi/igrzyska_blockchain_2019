@@ -64,6 +64,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [# custom users app
     'igrzyska.users.apps.UsersConfig',
     # Your stuff: custom apps go here
+    'igrzyska.organisations.apps.OrganisationsConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
