@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.deployed
+build
+installed_contracts
+node_modules
+coverage
+coverage.json
+.vscode
+package-lock.json
+logs.txt
