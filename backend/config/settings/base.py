@@ -345,3 +345,4 @@ REST_FRAMEWORK = {
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[])

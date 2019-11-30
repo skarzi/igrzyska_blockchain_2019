@@ -13,7 +13,7 @@ DJANGO_SETTINGS_MODULE=config.settings.local
 # Settings module for tests
 DJANGO_SETTINGS_MODULE_TEST=config.settings.test
 DJANGO_SECRET_KEY=u5|5ArJEJaT?5^63;O)BXpV}a!wO?^6vyG9Vj6#t-Erd#<V.qa
-DJANGO_ALLOWED_HOSTS=*
+DJANGO_ALLOWED_HOSTS=
 
 
 # Celery
