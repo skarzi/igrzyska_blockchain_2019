@@ -49,6 +49,8 @@ services:
     image: trufflesuite/ganache-cli:latest
     ports:
       - "7546:8545"
+    volumes:
+      - ./quorum/:/quorum/
 
 # redis:
 #   image: redis:3.0
