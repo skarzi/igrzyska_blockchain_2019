@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "dotenv": "^8.0.0",
+    "eth-gas-reporter": "^0.2.0",
     "ganache-cli": "^6.4.3",
     "openzeppelin-solidity": "^2.2.0",
     "rimraf": "^2.6.3",
