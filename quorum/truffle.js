@@ -16,7 +16,7 @@ module.exports = {
     networks: {
         ganache: {
             host: "localhost",
-            port: 7545,
+            port: 8547,
             network_id: "*",
             type: "quorum",
         },
