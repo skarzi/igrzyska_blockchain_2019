@@ -1,3 +1,5 @@
 from django.db import models
 
-# Create your models here.
+class Organisation(models.Model):
+    name = models.CharField(max_length=64)
+    public_key = models.CharField(max_length=128)
