@@ -13,46 +13,70 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 contract OrgToken is ERC20Detailed, ERC20, Ownable {
     address public backend;
+    bool public auctionStarted;
+    bool public organization;
+    byte16 requiredSigns;
+    mapping (address => bool) public brokers;
+    mapping (address => bool) public investors;
+    mapping (address => bool) public signs;
 
-    modifier onlyBroker() { require(true == true, "Message"); _; }
+    modifier onlyBroker() { require(brokers[msg.sender] == true, "Sender should be broker"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
+    modifier onlyOrganization() { require(msg.sender == organization, "Sender should be organization"); _; }
+    modifier auctionStarted() { require(auction_started == true, "Auction has to be started"); _; }
 
     constructor(
         string memory _name,
         string memory _symbol,
         uint8 _decimals,
-        address _backend
+        address _backend,
+        address _organization,
+        byte16 _minSigns
     ) public
     ERC20Detailed(_name, _symbol, _decimals)
     Ownable() {
         backend = _backend;
+        organization = _organization;
+        auctionStarted = false;
+        requiredSigns = _minSigns;
     }
 
     // SECTION: START AUCTION
-    function invokeAuctionRequest() {
-        // invoke auction request by comp/org
+    function invokeAuctionRequest()
+    onlyBroker() {
+        // empty??
     }
 
     function signAuctionRequest()
-    onlyBroker() {
-        // sign auction request by one of brokers
+    onlyOrganization() {
+        if (signs[msg.sender] == false && requiredSigns > 0) {
+            signs[msg.sender] = true;
+            requiredSigns--;
+        } else {
+            revert('Already signed by sender or no requires more signatures');
+        }
     }
 
-    function startAuction() {
-        // start auction by company/org when auction is signed by comp/org
+    function startAuction()
+    onlyOrganization() {
+        if (auctionStarted == false && requiredSigns == 0) {
+            auctionStarted = true;
+        } else {
+            revert('Auction already started or requires more signatures');
+        }
     }
 
     // SECTION: INVEST
-    function becomeInvestorRequest() {
-        // investor request by user
-    }
-
-    function signInvestorRequest()
+    function addInvestorByBroker(bytes32 userAddress)
     onlyBroker() {
-        // sign investor request by one of brokers
+        if (investors[userAddress] == false) {
+            investors[userAddress] = true;
+        } else {
+            revert('Already an investor');
+        }
     }
 
-    function buildInvestInAuction(address _from, uint256 _value)
+    function buildInvestInAuction(address _auctionAddress, address _from, uint256 _value)
     onlyBackend()
     returns (bytes32) {
         // build invest method for user by backend
@@ -60,18 +84,25 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     }
 
     function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable {
-        // investing in auction by user
         address signer = ecrecover(_message, _v, _r, _s);
     }
 
     // SECTION: CONFIGURE BROKER
     function addBroker(address _broker)
     onlyOwner() {
-        // add broker by owner
+        if (brokers[_broker] == false) {
+            brokers[_broker] = true;
+        } else {
+            revert('Already a broker');
+        }
     }
 
     function removeBroker(address _broker)
     onlyOwner() {
-        // remove broker by owner
+        if (brokers[_broker] == true) {
+            brokers[_broker] = false;
+        } else {
+            revert('Not a broker');
+        }
     }
 }
