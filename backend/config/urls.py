@@ -31,7 +31,8 @@ urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
     # User management
     url(r'^users/', include('igrzyska.users.urls')),
-    
+    url(r'^fundings/', include('igrzyska.fundings.urls')),
+
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^docs/$', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
