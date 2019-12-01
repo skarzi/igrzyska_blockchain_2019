@@ -9,6 +9,10 @@ class GlobalConfig {
         this.broker = '0xF7DE62B65768a169279be74b12FaA65a22FB38D3';
         this.organization = '0xF7DE62B65768a169279be74b12FaA65a22FB38D3';
         this.user = '0xF7DE62B65768a169279be74b12FaA65a22FB38D3';
+        this.tokenName = 'TestAuction';
+        this.tokenSymbol = 'TA';
+        this.supply = 1 * 10**6;
+        this.ratio = 100;
     }
 
     get deploymentFile() {

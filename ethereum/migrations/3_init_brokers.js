@@ -13,6 +13,15 @@ module.exports = async (deployer) => {
     let orgToken = await orgTokenContract.at(orgTokenAddress);
 
     await orgToken.addBroker(globalConfig.broker);
+    await orgToken.invokeAuctionRequest({
+        from: globalConfig.organization,
+    });
+    await orgToken.signAuctionRequest({
+       from: globalConfig.broker,
+    });
+    await orgToken.startAuction({
+       from: globalConfig.organization,
+    });
 
     console.log('Migrations deployed!');
 };
