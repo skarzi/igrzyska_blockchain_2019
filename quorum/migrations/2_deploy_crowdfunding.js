@@ -14,4 +14,6 @@ module.exports = async (deployer) => {
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({
         crowdfunding: crowdfundingContract.address,
     }));
+
+    await crowdfundingContract.addBroker("0xF7DE62B65768a169279be74b12FaA65a22FB38D3");
 };

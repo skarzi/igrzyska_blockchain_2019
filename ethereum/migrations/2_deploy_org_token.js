@@ -24,4 +24,6 @@ module.exports = async (deployer) => {
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({
         orgToken: orgTokenContract.address,
     }));
+
+    await orgTokenContract.addBroker("0xF7DE62B65768a169279be74b12FaA65a22FB38D3");
 };
