@@ -37,17 +37,17 @@ services:
       - ./shared/templates:/app/shared/templates
       - ./docs:/docs
 
-  eth:
-    container_name: eth
-    image: trufflesuite/ganache-cli:latest
-    ports:
-      - "8546:8545"
-
-  quorum:
-    container_name: quorum
-    image: trufflesuite/ganache-cli:latest
-    ports:
-      - "8547:8545"
+#  eth:
+#    container_name: eth
+#    image: trufflesuite/ganache-cli:latest
+#    ports:
+#      - "8546:8545"
+#
+#  quorum:
+#    container_name: quorum
+#    image: trufflesuite/ganache-cli:latest
+#    ports:
+#      - "8547:8545"
 
 #  eth-migrate:
 #    container_name: eth-migrate
