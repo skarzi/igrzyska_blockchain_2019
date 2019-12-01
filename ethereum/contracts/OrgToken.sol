@@ -53,10 +53,6 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
     modifier onlyOrganization() { require(msg.sender == organization, "Sender should be organization"); _; }
     modifier auctionStarted() { require(auctionStartedInfo == true, "Auction has to be started"); _; }
-    modifier onlyInState(State _state) {
-        require(currentState == _state, "State of Event Token is invalid");
-        _;
-    }
 
     constructor(
         string memory _name,
@@ -131,8 +127,9 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return _computedHash;
     }
 
-    function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable
+    function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s)
     onlyInState(State.Started)
+    payable
     public {
         if (hashesBitches[msg.sender] == _message) {
             address signer = ecrecover(_message, _v, _r, _s);
