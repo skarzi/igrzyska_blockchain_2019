@@ -16,6 +16,13 @@ class FundingEntrySerializer(serializers.ModelSerializer):
             'tokens_amount',
             'token_price',
         )
+        extra_kwargs = {
+            'token_price': {'read_only': True},
+        }
+
+    def create(self, validated_data):
+        validated_data['token_price'] = validated_data['funding'].token_price
+        return super().create(validated_data)
 
 
 class FundingEntryDetailSerializer(FundingEntrySerializer):
