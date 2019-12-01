@@ -42,6 +42,7 @@ class FundingEntry(models.Model):
     tokens_amount = models.PositiveIntegerField()
     token_price = models.DecimalField(max_digits=12, decimal_places=4)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Funding Entries'
