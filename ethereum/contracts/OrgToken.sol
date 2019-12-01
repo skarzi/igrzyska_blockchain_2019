@@ -40,7 +40,12 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return investorsWhitelist.length;
     }
 
-    mapping (address => bytes32) public hashesBitches;
+    struct HashData {
+        address from;
+        uint256 value;
+        bytes32 data;
+    }
+    mapping (address => HashData) public hashesBitches;
 
     enum State {
         NotStarted,
@@ -63,6 +68,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         string memory _name,
         string memory _symbol,
         uint8 _decimals,
+        uint256 _tokensTotal,
         address _backend,
         address _organization,
         uint256 _requiredSigns
@@ -71,8 +77,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     Ownable() {
         backend = _backend;
         organization = _organization;
-        auctionStarted = false;
         requiredSigns = _requiredSigns;
+
+        _mint(address(this), _tokensTotal);
+        currentState = State.NotStarted;
     }
 
     // SECTION: START AUCTION
@@ -115,23 +123,38 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         }
     }
 
-    function buildInvestInAuction(address _auctionAddress, address _from, uint256 _value)
+    function buildInvestInAuction(address _from, uint256 _value)
     onlyBackend()
     onlyInState(State.Started)
-    returns (bytes32) {
+    returns (HashData) {
         // Compute hash using _from and _value
-        bytes32 _computedHash = 0x0;
-        hashesBitches[_auctionAddress] = _computedHash;
-        return _computedHash;
+        bytes32 _hashData = HashData(
+            from=_from,
+            value=_value,
+            data=0x0
+        );
+        hashesBitches[_from] = _hashData;
+        return _hashData;
     }
 
     function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable
     onlyInState(State.Started) {
-        if (hashesBitches[msg.sender] == _message) {
-            address signer = ecrecover(_message, _v, _r, _s);
-        } else {
+        HashData _hashData = hashesBitches[msg.sender];
+        if (_hashData.data != _message) {
             revert('Not a proper hash bitch');
         }
+
+        address signer = ecrecover(_message, _v, _r, _s);
+        if (_hashData.from != signer) {
+            revert('Signer is not ok bitch');
+        }
+
+        if (_hashData.value != msg.value) {
+            revert('Give me my money bitch');
+        }
+
+        // For now 1:100 ratio (1 ETH => 100 Tokens)
+        transfer(_hashData.from, _hashData.value * 100);
     }
 
     // SECTION: CONFIGURE BROKER
