@@ -13,9 +13,8 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 contract OrgToken is ERC20Detailed, ERC20, Ownable {
     address public backend;
-    bool public auctionStarted;
     bool public organization;
-    uint256 requiredSigns;
+    uint256 public requiredSigns;
 
     address[] public brokers;
     mapping (address => bool) public brokersWhitelist;
@@ -29,10 +28,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return investors.length;
     }
 
-    address[] public auctionSigns;
-    mapping (address => uint256) public auctionSignsWhitelist;
-    function getAuctionSignsCount() public view returns (uint256) {
-        return auctionSigns.length;
+    address[] public signedByBroker;
+    mapping (address => uint256) public signByBrokerList;
+    function getSignedBrokerCount() public view returns (uint256) {
+        return signedByBroker.length;
     }
 
     address[] public investorsWhitelist;
@@ -41,6 +40,17 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return investorsWhitelist.length;
     }
 
+    enum State {
+        NotStarted,
+        Verification,
+        Started
+    }
+    State public currentState;
+
+    modifier onlyInState(State _state) {
+        require(currentState == _state, "State of Event Token is invalid");
+        _;
+    }
 
     modifier onlyBroker() { require(brokers[msg.sender] == true, "Sender should be broker"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
@@ -65,15 +75,17 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     // SECTION: START AUCTION
     function invokeAuctionRequest()
-    onlyOrganization() {
-
+    onlyOrganization()
+    onlyInState(State.NotStarted) {
+        currentState = State.Verification;
     }
 
     function signAuctionRequest()
-    onlyBroker() {
-        if (auctionSignsWhitelist[msg.sender] == 0) {
-            auctionSignsWhitelist[msg.sender] = auctionSigns.length + 1;
-            auctionSigns.push(msg.sender);
+    onlyBroker()
+    onlyInState(State.Verification) {
+        if (signByBrokerList[msg.sender] == 0) {
+            signByBrokerList[msg.sender] = signedByBroker.length + 1;
+            signedByBroker.push(msg.sender);
             requiredSigns--;
         } else {
             revert('Already signed by sender or no requires more signatures');
@@ -81,9 +93,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     }
 
     function startAuction()
-    onlyOrganization() {
+    onlyOrganization()
+    onlyInState(State.Verification) {
         if (auctionStarted == false && requiredSigns == 0) {
-            auctionStarted = true;
+            currentState = State.Started;
         } else {
             revert('Auction already started or requires more signatures');
         }
@@ -102,12 +115,14 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     function buildInvestInAuction(address _auctionAddress, address _from, uint256 _value)
     onlyBackend()
+    onlyInState(State.Started)
     returns (bytes32) {
         // build invest method for user by backend
         return 0x0;
     }
 
-    function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable {
+    function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable
+    onlyInState(State.Started) {
         address signer = ecrecover(_message, _v, _r, _s);
     }
 
