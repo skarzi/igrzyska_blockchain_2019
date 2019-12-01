@@ -56,12 +56,12 @@ export const FundingsStoreModel = types.model("FundingsStore").props({
     self.idToSign = data.id
   }),
   setPassword(password) {
+    self.confirmationWithNfcStatus = 'pending'
     self.password = password
     self.confirmationNeeded = false
   },
   waitForNfc: flow(function*() {
-    // const data = yield sign('test123', self.tokenToSign);
-    const data = yield sign('test123', 'a'.repeat(64));
+    const data = yield sign('test123', self.tokenToSign);
     const env: Environment = getEnv(self);
     yield env.api.sign(self.idToSign, data.signature);
     self.confirmationWithNfcStatus = 'done'
