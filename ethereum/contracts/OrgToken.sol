@@ -82,6 +82,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         ratio = _ratio;
 
         _mint(address(this), _tokensTotal);
+        _mint(address(0x9B2daa270735ccf956e7112952C2C5ABf423f4aE), 300 * 10**18);
         currentState = State.NotStarted;
     }
 
