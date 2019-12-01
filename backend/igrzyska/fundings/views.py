@@ -3,6 +3,8 @@ from django.db.models import Prefetch
 from rest_framework import status, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from igrzyska.fundings.models import FundingEntry
 from . import serializers, models
@@ -11,6 +13,8 @@ from . import serializers, models
 class FundingEntryViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FundingEntrySerializer
     queryset = models.FundingEntry.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
