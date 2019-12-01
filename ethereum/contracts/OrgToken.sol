@@ -19,12 +19,21 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     address[] public brokers;
     mapping (address => bool) public brokersWhitelist;
+    function getBrokersCount() public view returns (uint256) {
+        return users.length;
+    }
 
     address[] public investors;
     mapping (address => uint256) public investorsWhitelist;
+    function getInvestorsCount() public view returns (uint256) {
+        return users.length;
+    }
 
     address[] public signs;
     mapping (address => uint256) public signsWhitelist;
+    function getSignsCount() public view returns (uint256) {
+        return users.length;
+    }
 
 
     modifier onlyBroker() { require(brokers[msg.sender] == true, "Sender should be broker"); _; }
