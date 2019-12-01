@@ -1,6 +1,9 @@
 const OrgToken = artifacts.require('OrgToken');
 
 contract('OrgToken', (accounts) => {
+    let broker = accounts[7];
+    let organization = accounts[8];
+    let backend = accounts[9];
     let orgToken;
 
     beforeEach(async () => {
@@ -9,8 +12,8 @@ contract('OrgToken', (accounts) => {
             "SYM",
             18,
             1 * 10**6,
-            accounts[8],
-            accounts[9],
+            backend,
+            organization,
             1,
             100,
         );
@@ -21,8 +24,6 @@ contract('OrgToken', (accounts) => {
     });
 
     it('Test brokers', async () => {
-        let broker = accounts[1];
-
         let brokersCount = await orgToken.getBrokersCount();
 
         assert(
@@ -44,6 +45,40 @@ contract('OrgToken', (accounts) => {
         assert(
             brokersCount.toNumber() === 0,
             'Brokers count is not zero.',
+        );
+    });
+
+    it('Test auctions', async () => {
+        await orgToken.addBroker(broker);
+
+        let state = await orgToken.currentState.call();
+        assert(
+            state.toNumber() === 0,
+            'State should be started.',
+        );
+
+        await orgToken.invokeAuctionRequest({
+            from: organization,
+        });
+
+        state = await orgToken.currentState.call();
+        assert(
+            state.toNumber() === 1,
+            'State should be in verification.',
+        );
+
+        await orgToken.signAuctionRequest({
+           from: broker,
+        });
+
+        await orgToken.startAuction({
+           from: organization,
+        });
+
+        state = await orgToken.currentState.call();
+        assert(
+            state.toNumber() === 2,
+            'State should be started.',
         );
     });
 });
