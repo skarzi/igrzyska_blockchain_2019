@@ -5,6 +5,9 @@ DotEnv.config();
 class GlobalConfig {
     constructor() {
         this.keepDeployedFile = process.env.KEEP_DEPLOYED;
+        this.broker = '0xe625Ea79101f0f05C55f4134cEc71628016717b8';
+        this.organization = '0x235bFCb8B953538d70b806CF475851a520b980ca';
+        this.user = '0x9B2daa270735ccf956e7112952C2C5ABf423f4aE';
     }
 
     get deploymentFile() {

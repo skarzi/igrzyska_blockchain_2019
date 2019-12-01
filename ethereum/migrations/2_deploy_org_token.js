@@ -11,14 +11,14 @@ module.exports = async (deployer) => {
     let orgTokenContract = globalConfig.getOrgTokenContract(artifacts);
     await deployer.deploy(
         orgTokenContract,
-        "TokenName",
-        "SYM",
+        globalConfig.tokenName,
+        globalConfig.tokenSymbol,
         18,
-        1 * 10**6,
-        "0xF7DE62B65768a169279be74b12FaA65a22FB38D3",
-        "0xF7DE62B65768a169279be74b12FaA65a22FB38D3",
+        globalConfig.supply,
+        globalConfig.backend,
+        globalConfig.organization,
         1,
-        100,
+        globalConfig.ratio,
     );
 
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({

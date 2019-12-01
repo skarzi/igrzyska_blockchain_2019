@@ -15,28 +15,28 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
+  TextInput
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
   Colors,
-  DebugInstructions,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {ethers, Wallet, utils} from 'ethers';
+import {Buffer} from 'buffer';
 
 import nfcTest from './etherum';
 
 export default class App extends React.Component {
   state = {
     msg: '',
+    text: ''
   };
 
   testNfc = async () => {
-    let hash = '';
-    for  (let i = 0; i < 64; ++i) {
-      hash += 'a';
-    }
+    let hash = utils.keccak256(Buffer.from(this.state.text)).substr(2);
+    this.setState({
+      msg: "Waiting for NFC card"
+    });
     nfcTest('test123', hash).then((res) => {
       console.log(res);
       this.setState({
@@ -48,6 +48,11 @@ export default class App extends React.Component {
         msg: JSON.stringify(err)
       });
     });
+    setTimeout(() => {
+      this.setState({
+        msg: ""
+      });
+    }, 15000);
   };
 
   render() {
@@ -58,17 +63,17 @@ export default class App extends React.Component {
           <ScrollView
             contentInsetAdjustmentBehavior="automatic"
             style={styles.scrollView}>
-            <Header />
-            {global.HermesInternal == null ? null : (
-              <View style={styles.engine}>
-                <Text style={styles.footer}>Engine: Hermes</Text>
-              </View>
-            )}
             <View style={styles.body}>
+            <Text style={styles.sectionTitle}>NFC encoder demo</Text>
+              <TextInput
+                  style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10 }}
+                  onChangeText={text => { this.setState({text: text}); }}
+                  value={this.state.text}
+                />
               <TouchableOpacity
                 style={styles.sectionContainer}
                 onPress={this.testNfc}>
-                <Text style={styles.sectionTitle}>Click to test NFC</Text>
+                <Text style={styles.sectionTitle}>Click to sign message</Text>
               </TouchableOpacity>
               <Text>{this.state.msg}</Text>
             </View>
@@ -91,13 +96,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   sectionContainer: {
-    marginTop: 32,
     paddingHorizontal: 24,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
     color: Colors.black,
+    textAlign: 'center'
   },
   sectionDescription: {
     marginTop: 8,
