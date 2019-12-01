@@ -16,6 +16,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     address public backend;
     address public organization;
     uint256 public requiredSigns;
+    uint256 public ratio;
     bool public auctionStartedInfo;
 
     address[] public brokers;
@@ -68,7 +69,8 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         uint256 _tokensTotal,
         address _backend,
         address _organization,
-        uint256 _requiredSigns
+        uint256 _requiredSigns,
+        uint256 _ratio
     )
     ERC20Detailed(_name, _symbol, _decimals)
     Ownable()
@@ -77,6 +79,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         organization = _organization;
         auctionStartedInfo = false;
         requiredSigns = _requiredSigns;
+        ratio = _ratio;
 
         _mint(address(this), _tokensTotal);
         currentState = State.NotStarted;
@@ -160,7 +163,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         }
 
         // For now 1:100 ratio (1 ETH => 100 Tokens)
-        transfer(_hashData.from, _hashData.value * 100);
+        transfer(_hashData.from, _hashData.value * ratio);
     }
 
     // SECTION: CONFIGURE BROKER
