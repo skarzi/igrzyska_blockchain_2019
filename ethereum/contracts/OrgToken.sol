@@ -1,4 +1,5 @@
 pragma solidity ^0.5.2;
+pragma experimental ABIEncoderV2;
 
 // Remix
 // import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-solidity/v1.12.0/contracts/ownership/Ownable.sol";
@@ -13,11 +14,12 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 contract OrgToken is ERC20Detailed, ERC20, Ownable {
     address public backend;
-    bool public organization;
+    address public organization;
     uint256 public requiredSigns;
+    bool public auctionStartedInfo;
 
     address[] public brokers;
-    mapping (address => bool) public brokersWhitelist;
+    mapping (address => uint256) public brokersWhitelist;
     function getBrokersCount() public view returns (uint256) {
         return brokers.length;
     }
@@ -34,11 +36,6 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return signedByBroker.length;
     }
 
-    address[] public investorsWhitelist;
-    mapping (address => uint256) public investorsWhitelistWhitelist;
-    function getInvestorsSignsCount() public view returns (uint256) {
-        return investorsWhitelist.length;
-    }
 
     struct HashData {
         address from;
@@ -59,10 +56,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         _;
     }
 
-    modifier onlyBroker() { require(brokers[msg.sender] == true, "Sender should be broker"); _; }
+    modifier onlyBroker() { require(brokersWhitelist[msg.sender] > 0, "Sender should be broker"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
     modifier onlyOrganization() { require(msg.sender == organization, "Sender should be organization"); _; }
-    modifier auctionStarted() { require(auctionStarted == true, "Auction has to be started"); _; }
+    modifier auctionStarted() { require(auctionStartedInfo == true, "Auction has to be started"); _; }
 
     constructor(
         string memory _name,
@@ -72,11 +69,13 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         address _backend,
         address _organization,
         uint256 _requiredSigns
-    ) public
+    )
     ERC20Detailed(_name, _symbol, _decimals)
-    Ownable() {
+    Ownable()
+    public {
         backend = _backend;
         organization = _organization;
+        auctionStartedInfo = false;
         requiredSigns = _requiredSigns;
 
         _mint(address(this), _tokensTotal);
@@ -86,13 +85,15 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     // SECTION: START AUCTION
     function invokeAuctionRequest()
     onlyOrganization()
-    onlyInState(State.NotStarted) {
+    onlyInState(State.NotStarted)
+    public {
         currentState = State.Verification;
     }
 
     function signAuctionRequest()
     onlyBroker()
-    onlyInState(State.Verification) {
+    onlyInState(State.Verification)
+    public {
         if (signByBrokerList[msg.sender] == 0) {
             signByBrokerList[msg.sender] = signedByBroker.length + 1;
             signedByBroker.push(msg.sender);
@@ -104,8 +105,9 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     function startAuction()
     onlyOrganization()
-    onlyInState(State.Verification) {
-        if (auctionStarted == false && requiredSigns == 0) {
+    onlyInState(State.Verification)
+    public {
+        if (auctionStartedInfo == false && requiredSigns == 0) {
             currentState = State.Started;
         } else {
             revert('Auction already started or requires more signatures');
@@ -114,7 +116,9 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     // SECTION: INVEST
     function addInvestorByBroker(address userAddress)
-    onlyBroker() {
+    auctionStarted()
+    onlyBroker()
+    public {
         if (investorsWhitelist[userAddress] == 0) {
             investorsWhitelist[userAddress] = investors.length + 1;
             investors.push(userAddress);
@@ -126,20 +130,22 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     function buildInvestInAuction(address _from, uint256 _value)
     onlyBackend()
     onlyInState(State.Started)
-    returns (HashData) {
+    public
+    returns (HashData memory) {
         // Compute hash using _from and _value
-        bytes32 _hashData = HashData(
-            from=_from,
-            value=_value,
-            data=0x0
+        HashData memory _hashData = HashData(
+            _from,
+            _value,
+            0x0
         );
         hashesBitches[_from] = _hashData;
         return _hashData;
     }
 
     function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable
-    onlyInState(State.Started) {
-        HashData _hashData = hashesBitches[msg.sender];
+    onlyInState(State.Started)
+    public {
+        HashData memory _hashData = hashesBitches[msg.sender];
         if (_hashData.data != _message) {
             revert('Not a proper hash bitch');
         }
@@ -159,9 +165,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     // SECTION: CONFIGURE BROKER
     function addBroker(address _broker)
-    onlyOwner() {
+    onlyOwner()
+    public {
         if (brokersWhitelist[_broker] == 0) {
-            brokersWhitelist[_broker] == brokers.length + 1;
+            brokersWhitelist[_broker] = brokers.length + 1;
             brokers.push(_broker);
         } else {
             revert('Already a broker');
@@ -169,7 +176,8 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     }
 
     function removeBroker(address _broker)
-    onlyOwner() {
+    onlyOwner()
+    public {
         if (brokersWhitelist[_broker] != 0) {
             delete brokers[brokersWhitelist[_broker] - 1];
             brokers.length--;
