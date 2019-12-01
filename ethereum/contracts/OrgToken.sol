@@ -36,12 +36,18 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     }
 
 
+    mapping (address => bytes32) public hashesBitches;
     enum State {
         NotStarted,
         Verification,
         Started
     }
     State public currentState;
+
+    modifier onlyInState(State _state) {
+        require(currentState == _state, "State of Event Token is invalid");
+        _;
+    }
 
     modifier onlyBroker() { require(brokersWhitelist[msg.sender] > 0, "Sender should be broker"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
@@ -114,19 +120,25 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         }
     }
 
-    function buildInvestInAuction(address _auctionAddress, address _from, uint256 _value)
+    function buildInvestInAuction(address _from, uint256 _value)
     onlyInState(State.Started)
     onlyBackend()
     public
     returns (bytes32) {
-        // build invest method for user by backend
-        return 0x0;
+        // Compute hash using _from and _value
+        bytes32 _computedHash = 0x0;
+        hashesBitches[_auctionAddress] = _computedHash;
+        return _computedHash;
     }
 
     function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable
     onlyInState(State.Started)
     public {
-        address signer = ecrecover(_message, _v, _r, _s);
+        if (hashesBitches[msg.sender] == _message) {
+            address signer = ecrecover(_message, _v, _r, _s);
+        } else {
+            revert('Not a proper hash bitch');
+        }
     }
 
     // SECTION: CONFIGURE BROKER
