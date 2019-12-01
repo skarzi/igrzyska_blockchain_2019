@@ -15,8 +15,8 @@ module.exports = async (deployer) => {
         "SYM",
         18,
         1 * 10**6,
-        "0xF7DE62B65768a169279be74b12FaA65a22FB38D3",
-        "0xF7DE62B65768a169279be74b12FaA65a22FB38D3",
+        globalConfig.backend,
+        globalConfig.organization,
         1,
         100,
     );
@@ -24,6 +24,4 @@ module.exports = async (deployer) => {
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({
         orgToken: orgTokenContract.address,
     }));
-
-    await orgTokenContract.addBroker("0xF7DE62B65768a169279be74b12FaA65a22FB38D3");
 };

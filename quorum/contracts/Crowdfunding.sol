@@ -39,7 +39,8 @@ contract Crowdfunding is Ownable {
         }
     }
 
-    function removeBroker(address _broker) public {
+    function removeBroker(address _broker)
+    onlyOwner() public {
         if (brokerMap[_broker] != 0) {
             delete brokers[brokerMap[_broker] - 1];
             brokers.length--;
