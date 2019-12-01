@@ -28,15 +28,23 @@ contract('OrgToken', () => {
 
         await orgToken.addBroker(broker);
 
-        brokersCount = await crowdfunding.getBrokersCount();
+        brokersCount = await orgToken.getBrokersCount();
         assert(
             brokersCount.toNumber() > 0,
             'Brokers count is not greater than zero.',
         );
 
+        await orgToken.addBroker(broker);
+
+        brokersCount = await orgToken.getBrokersCount();
+        assert(
+            brokersCount.toNumber() == 1,
+            'Brokers can not be add twice.',
+        );
+
         await orgToken.removeBroker(broker);
 
-        brokersCount = await crowdfunding.getBrokersCount();
+        brokersCount = await orgToken.getBrokersCount();
         assert(
             brokersCount.toNumber() === 0,
             'Brokers count is not zero.',

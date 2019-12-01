@@ -20,26 +20,32 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     address[] public brokers;
     mapping (address => bool) public brokersWhitelist;
     function getBrokersCount() public view returns (uint256) {
-        return users.length;
+        return brokers.length;
     }
 
     address[] public investors;
     mapping (address => uint256) public investorsWhitelist;
     function getInvestorsCount() public view returns (uint256) {
-        return users.length;
+        return investors.length;
     }
 
-    address[] public signs;
-    mapping (address => uint256) public signsWhitelist;
+    address[] public auctionSigns;
+    mapping (address => uint256) public auctionSignsWhitelist;
     function getSignsCount() public view returns (uint256) {
-        return users.length;
+        return auctionSigns.length;
+    }
+
+    address[] public investorsSigns;
+    mapping (address => uint256) public investorsSignsWhitelist;
+    function getSignsCount() public view returns (uint256) {
+        return investorsSigns.length;
     }
 
 
     modifier onlyBroker() { require(brokers[msg.sender] == true, "Sender should be broker"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
     modifier onlyOrganization() { require(msg.sender == organization, "Sender should be organization"); _; }
-    modifier auctionStarted() { require(auction_started == true, "Auction has to be started"); _; }
+    modifier auctionStarted() { require(auctionStarted == true, "Auction has to be started"); _; }
 
     constructor(
         string memory _name,
@@ -47,7 +53,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         uint8 _decimals,
         address _backend,
         address _organization,
-        byte16 _minSigns
+        bytes16 _minSigns
     ) public
     ERC20Detailed(_name, _symbol, _decimals)
     Ownable() {
@@ -63,9 +69,9 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     function signAuctionRequest()
     onlyOrganization() {
-        if (signsWhitelist[msg.sender] == 0) {
-            signsWhitelist[msg.sender] = signs.length + 1;
-            signs.push(msg.sender);
+        if (auctionSignsWhitelist[msg.sender] == 0) {
+            auctionSignsWhitelist[msg.sender] = auctionSigns.length + 1;
+            auctionSigns.push(msg.sender);
             requiredSigns--;
         } else {
             revert('Already signed by sender or no requires more signatures');
