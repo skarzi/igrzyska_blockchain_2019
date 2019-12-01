@@ -49,19 +49,19 @@ services:
     ports:
       - "8547:8545"
 
-  eth-migrate:
-    container_name: eth-migrate
-    image: node:11.0
-    volumes:
-      - ./ethereum/:/ethereum/
-    entrypoint: '/ethereum/start.sh'
-
-  quorum-migrate:
-    container_name: quorum-migrate
-    image: node:11.0
-    volumes:
-      - ./quorum/:/quorum/
-    entrypoint: '/qourum/start.sh'
+#  eth-migrate:
+#    container_name: eth-migrate
+#    image: node:11.0
+#    volumes:
+#      - ./ethereum/:/ethereum/
+#    entrypoint: '/ethereum/start.sh'
+#
+#  quorum-migrate:
+#    container_name: quorum-migrate
+#    image: node:11.0
+#    volumes:
+#      - ./quorum/:/quorum/
+#    entrypoint: '/qourum/start.sh'
 
 # redis:
 #   image: redis:3.0
