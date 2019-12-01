@@ -15,7 +15,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     address public backend;
     bool public auctionStarted;
     bool public organization;
-    byte16 requiredSigns;
+    uint256 requiredSigns;
 
     address[] public brokers;
     mapping (address => bool) public brokersWhitelist;
@@ -82,7 +82,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     }
 
     // SECTION: INVEST
-    function addInvestorByBroker(bytes32 userAddress)
+    function addInvestorByBroker(address userAddress)
     onlyBroker() {
         if (investorsSigns[userAddress] == 0) {
             investorsSigns[userAddress] = investors.length + 1;
