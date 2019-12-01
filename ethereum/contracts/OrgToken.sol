@@ -35,10 +35,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return auctionSigns.length;
     }
 
-    address[] public investorsSigns;
-    mapping (address => uint256) public investorsSignsWhitelist;
+    address[] public investorsWhitelist;
+    mapping (address => uint256) public investorsWhitelistWhitelist;
     function getInvestorsSignsCount() public view returns (uint256) {
-        return investorsSigns.length;
+        return investorsWhitelist.length;
     }
 
 
@@ -65,10 +65,12 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     // SECTION: START AUCTION
     function invokeAuctionRequest()
-    onlyBroker() {}
+    onlyOrganization() {
+
+    }
 
     function signAuctionRequest()
-    onlyOrganization() {
+    onlyBroker() {
         if (auctionSignsWhitelist[msg.sender] == 0) {
             auctionSignsWhitelist[msg.sender] = auctionSigns.length + 1;
             auctionSigns.push(msg.sender);
@@ -90,8 +92,8 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     // SECTION: INVEST
     function addInvestorByBroker(address userAddress)
     onlyBroker() {
-        if (investorsSigns[userAddress] == 0) {
-            investorsSigns[userAddress] = investors.length + 1;
+        if (investorsWhitelist[userAddress] == 0) {
+            investorsWhitelist[userAddress] = investors.length + 1;
             investors.push(userAddress);
         } else {
             revert('Already an investor');
