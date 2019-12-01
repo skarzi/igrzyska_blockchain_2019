@@ -31,13 +31,13 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     address[] public auctionSigns;
     mapping (address => uint256) public auctionSignsWhitelist;
-    function getSignsCount() public view returns (uint256) {
+    function getAuctionSignsCount() public view returns (uint256) {
         return auctionSigns.length;
     }
 
     address[] public investorsSigns;
     mapping (address => uint256) public investorsSignsWhitelist;
-    function getSignsCount() public view returns (uint256) {
+    function getInvestorsSignsCount() public view returns (uint256) {
         return investorsSigns.length;
     }
 
@@ -53,14 +53,14 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         uint8 _decimals,
         address _backend,
         address _organization,
-        bytes16 _minSigns
+        uint256 _requiredSigns
     ) public
     ERC20Detailed(_name, _symbol, _decimals)
     Ownable() {
         backend = _backend;
         organization = _organization;
         auctionStarted = false;
-        requiredSigns = _minSigns;
+        requiredSigns = _requiredSigns;
     }
 
     // SECTION: START AUCTION
