@@ -128,9 +128,9 @@ export class Api {
     return null;
   }
 
-  async sign(id, token) {
+  async sign(id) {
     const response = await this.apisauce.post(`/fundings/entries/${id}/complete/`, {
-      signed_token: token
+      signed_token: '1234'
     }, {
       headers: {
         Authorization: 'Token c3bef782426cb533a3ecca8b8e0716067235ca4d'

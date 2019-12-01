@@ -60,7 +60,7 @@ class FundingModelViewSet(viewsets.ModelViewSet):
         queryset = queryset.prefetch_related(
             Prefetch(
                 'entries',
-                queryset=models.FundingEntry.objects.select_related('user'),
+                queryset=models.FundingEntry.objects.filter(is_completed=True).select_related('user'),
             ),
         )
         return queryset

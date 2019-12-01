@@ -91,7 +91,7 @@ export const ConfirmScreen: React.FunctionComponent<ConfirmScreenProps> = observ
     fundingsStore.setPassword(password)
   }
 
-  if (fundingsStore.password !== '' && fundingsStore.password !== null) {
+  if (fundingsStore.goToNfc) {
     navigationStore.navigateTo('confirmWithNfc')
   }
 

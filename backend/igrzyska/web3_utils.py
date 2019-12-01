@@ -30,13 +30,26 @@ def create_funding(funding):
 
 def create_funding_entry(funding_entry):
     contract = public_w3.eth.contract(
-        address='',
+        address='0x7Da2dfAa2E1FCD41dD00F0a0219Cd9915f0bfa9E',
         abi=get_public_abi(),
     )
+    tx_hash = contract.functions.buildInvestInAuction(
+        funding_entry.user.public_key,
+        2, # funding_entry.tokens_amount * funding_entry.token_price,
+    ).transact()
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    return tx_receipt
 
 
-def complete_funding_entry(funding_entry, signed_token):
+
+def complete_funding_entry(funding_entry, signed_data):
     contract = public_w3.eth.contract(
-        address='0x000000000000000000000000000000000000dEaD',
+        address='0x7Da2dfAa2E1FCD41dD00F0a0219Cd9915f0bfa9E',
         abi=get_public_abi(),
     )
+    tx_hash = contract.functions.investInAuction(
+        *signed_data,
+        from=funding_entry.user.private_key,
+    ).transact()
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    return tx_receipt
