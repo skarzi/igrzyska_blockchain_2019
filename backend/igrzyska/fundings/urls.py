@@ -7,9 +7,7 @@ from . import views
 app_name = 'fundings'
 
 router = routers.SimpleRouter()
+router.register('entries', views.FundingEntryViewSet, base_name='entry')
 router.register('', views.FundingModelViewSet, base_name='fundings')
 
-urlpatterns = (
-    url(r'^entries/', views.FundingEntryView.as_view(), name='entry'),
-    *router.urls,
-)
+urlpatterns = router.urls
