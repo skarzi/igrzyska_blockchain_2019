@@ -14,7 +14,11 @@ module.exports = async (deployer) => {
         "TokenName",
         "SYM",
         18,
-        0x0,
+        1 * 10**6,
+        "0xF7DE62B65768a169279be74b12FaA65a22FB38D3",
+        "0xF7DE62B65768a169279be74b12FaA65a22FB38D3",
+        1,
+        100,
     );
 
     fs.writeFileSync(globalConfig.deploymentFile, JSON.stringify({

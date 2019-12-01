@@ -1,6 +1,6 @@
 const OrgToken = artifacts.require('OrgToken');
 
-contract('OrgToken', () => {
+contract('OrgToken', (accounts) => {
     let orgToken;
 
     beforeEach(async () => {
@@ -8,7 +8,11 @@ contract('OrgToken', () => {
             "TokenName",
             "SYM",
             18,
-            0x0,
+            1 * 10**6,
+            accounts[8],
+            accounts[9],
+            1,
+            100,
         );
     });
 
@@ -32,14 +36,6 @@ contract('OrgToken', () => {
         assert(
             brokersCount.toNumber() > 0,
             'Brokers count is not greater than zero.',
-        );
-
-        await orgToken.addBroker(broker);
-
-        brokersCount = await orgToken.getBrokersCount();
-        assert(
-            brokersCount.toNumber() == 1,
-            'Brokers can not be add twice.',
         );
 
         await orgToken.removeBroker(broker);
