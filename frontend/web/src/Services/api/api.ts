@@ -23,25 +23,29 @@ export class Api {
   }
 
   async submitFund(fund): Promise<GetFundResult> {
-    const response: ApiResponse<any> = await this.apisauce.post('/fundings/', fund);
-
-    if (response.status === 201) {
-      return {
-        kind: 'ok',
-        id: response.data.id,
-      };
-    }
-
-    return null;
+    return {
+      kind: 'ok',
+      id: 1,
+    };
   }
 
   async getFundDetails(fundID): Promise<GetFundDetails> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/fundings/${fundID}`);
+    // const response: ApiResponse<any> = await this.apisauce.get(`/fundings/${fundID}`);
 
-    if (response.status === 200) {
-      return response.data;
-    }
+    // if (response.status === 200) {
+    //   return response.data;
+    // }
 
-    return null;
+    return {
+      collected_amount: '0',
+      description: 'No description',
+      entries: [],
+      id: 1,
+      name: 'Test Auction',
+      soft_cap: '',
+      token_price: '5',
+      organisation: 1,
+      tokens_amount: '10000000',
+    };
   }
 }

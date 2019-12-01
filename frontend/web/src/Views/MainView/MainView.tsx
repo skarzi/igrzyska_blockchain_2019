@@ -51,7 +51,7 @@ export const MainView = observer(props => {
           />
 
           <TextField
-            label="Price per one token in PLN"
+            label="Price per one token in ETH"
             value={fundStore.fund.tokenPrice || ''}
             onChange={e => fundStore.setFundTokenPrice(e.target.value)}
             fullWidth
@@ -71,7 +71,7 @@ export const MainView = observer(props => {
               Submit
             </Button>
 
-            {totalAmount !== 0 && totalAmount ? <div>Total amount: {totalAmount} PLN</div> : null}
+            {totalAmount !== 0 && totalAmount ? <div>Total amount: {totalAmount} ETH</div> : null}
           </Grid>
         </form>
       </Grid>

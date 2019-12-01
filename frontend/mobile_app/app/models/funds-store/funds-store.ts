@@ -43,8 +43,6 @@ export const FundingsStoreModel = types.model("FundingsStore").props({
     const data = yield env.api.getFundings();
 
     self.fundings = data.results;
-
-    console.log({ data });
   }),
   invest: flow(function*(id, amount) {
     const env: Environment = getEnv(self);

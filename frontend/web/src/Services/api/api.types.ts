@@ -7,7 +7,4 @@ export type GetFundResult =
     }
   | GeneralApiProblem;
 
-export type GetFundDetails = {
-  entries: any[];
-  tokens_amount: number;
-} | null;
+export type GetFundDetails = any | null;
