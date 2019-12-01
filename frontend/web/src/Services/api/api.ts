@@ -1,7 +1,7 @@
 import { ApisauceInstance, create, ApiResponse } from 'apisauce';
 
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
-import { GetFundResult } from './api.types';
+import { GetFundResult, GetFundDetails } from './api.types';
 
 export class Api {
   apisauce: ApisauceInstance;
@@ -30,6 +30,16 @@ export class Api {
         kind: 'ok',
         id: response.data.id,
       };
+    }
+
+    return null;
+  }
+
+  async getFundDetails(fundID): Promise<GetFundDetails> {
+    const response: ApiResponse<any> = await this.apisauce.get(`/fundings/${fundID}`);
+
+    if (response.status === 200) {
+      return response.data;
     }
 
     return null;

@@ -12,7 +12,7 @@ export const MainView = observer(props => {
 
   const { tokens, tokenPrice } = fundStore.fund;
 
-  const tokensNumber = tokens !== '' && tokens !== null ? parseInt(tokens, 10) : 0;
+  const tokensNumber = tokens !== null ? tokens : 0;
   const tokenPriceNumber = tokenPrice !== '' && tokenPrice !== null ? parseInt(tokenPrice, 10) : 0;
   const totalAmount = tokensNumber * tokenPriceNumber;
 

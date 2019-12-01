@@ -6,3 +6,8 @@ export type GetFundResult =
       id?: number;
     }
   | GeneralApiProblem;
+
+export type GetFundDetails = {
+  entries: any[];
+  tokens_amount: number;
+} | null;
