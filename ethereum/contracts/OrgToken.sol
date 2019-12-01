@@ -16,9 +16,16 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     bool public auctionStarted;
     bool public organization;
     byte16 requiredSigns;
-    mapping (address => bool) public brokers;
-    mapping (address => bool) public investors;
-    mapping (address => bool) public signs;
+
+    address[] public brokers;
+    mapping (address => bool) public brokersWhitelist;
+
+    address[] public investors;
+    mapping (address => uint256) public investorsWhitelist;
+
+    address[] public signs;
+    mapping (address => uint256) public signsWhitelist;
+
 
     modifier onlyBroker() { require(brokers[msg.sender] == true, "Sender should be broker"); _; }
     modifier onlyBackend() { require(msg.sender == backend, "Sender should be backend"); _; }
@@ -43,14 +50,13 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     // SECTION: START AUCTION
     function invokeAuctionRequest()
-    onlyBroker() {
-        // empty??
-    }
+    onlyBroker() {}
 
     function signAuctionRequest()
     onlyOrganization() {
-        if (signs[msg.sender] == false && requiredSigns > 0) {
-            signs[msg.sender] = true;
+        if (signsWhitelist[msg.sender] == 0) {
+            signsWhitelist[msg.sender] = signs.length + 1;
+            signs.push(msg.sender);
             requiredSigns--;
         } else {
             revert('Already signed by sender or no requires more signatures');
@@ -69,8 +75,9 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     // SECTION: INVEST
     function addInvestorByBroker(bytes32 userAddress)
     onlyBroker() {
-        if (investors[userAddress] == false) {
-            investors[userAddress] = true;
+        if (investorsSigns[userAddress] == 0) {
+            investorsSigns[userAddress] = investors.length + 1;
+            investors.push(userAddress);
         } else {
             revert('Already an investor');
         }
@@ -90,8 +97,9 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     // SECTION: CONFIGURE BROKER
     function addBroker(address _broker)
     onlyOwner() {
-        if (brokers[_broker] == false) {
-            brokers[_broker] = true;
+        if (brokersWhitelist[_broker] == 0) {
+            brokersWhitelist[_broker] == brokers.length + 1;
+            brokers.push(_broker);
         } else {
             revert('Already a broker');
         }
@@ -99,8 +107,10 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
 
     function removeBroker(address _broker)
     onlyOwner() {
-        if (brokers[_broker] == true) {
-            brokers[_broker] = false;
+        if (brokersWhitelist[_broker] != 0) {
+            delete brokers[brokersWhitelist[_broker] - 1];
+            brokers.length--;
+            brokersWhitelist[_broker] = 0;
         } else {
             revert('Not a broker');
         }
