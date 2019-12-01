@@ -78,6 +78,9 @@ const FOOTER_CONTENT: ViewStyle = {
 const INPUT_STYLE: TextStyle = {
   color: color.text
 }
+const MARGIN: ViewStyle = {
+  marginBottom: 15
+}
 
 export interface ConfirmWithNfcScreenProps extends NavigationScreenProps<{}> {}
 
@@ -93,6 +96,7 @@ export const ConfirmWithNfcScreen: React.FunctionComponent<ConfirmWithNfcScreenP
   }, [])
 
   if (fundingsStore.confirmationWithNfcStatus === 'done') {
+    fundingsStore.reset();
     navigationStore.navigateTo('success')
   }
 
@@ -102,12 +106,12 @@ export const ConfirmWithNfcScreen: React.FunctionComponent<ConfirmWithNfcScreenP
       <Wallpaper />
       <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
         <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
-        <Text style={TITLE_WRAPPER}>
+        <Text style={[TITLE_WRAPPER, MARGIN]}>
           <Text style={TITLE} text="Confirm With Nfc" />
         </Text>
 
         {fundingsStore.confirmationWithNfcStatus === 'pending' ? (
-          <ActivityIndicator />
+          <ActivityIndicator size='large' />
         ) : (
           <Text>Thanks for your contribution</Text>
         )}

@@ -12,6 +12,8 @@ export const FundView = observer(props => {
 
   const fetchFunds = async () => {
     await fundStore.getFundDetails();
+
+    setTimeout(fetchFunds, 2000);
   };
 
   React.useEffect(() => {
@@ -31,6 +33,15 @@ export const FundView = observer(props => {
       </Grid>
       <Grid item xs={12} className={styles.cell}>
         {fundStore.fund.entriesFetched ? <FundCharts fund={fundStore.fund} /> : <div />}
+      </Grid>
+      <Grid item xs={12} className={styles.cell}>
+        <>
+          {fundStore.fund.entries.map((entry, index) => (
+            <div key={index}>
+              {entry.user.username} - has bought {entry.tokens_amount} token
+            </div>
+          ))}
+        </>
       </Grid>
     </Grid>
   );

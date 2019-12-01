@@ -1,6 +1,6 @@
 import { Instance, types, flow, getEnv } from "mobx-state-tree"
 import { Environment } from "../environment"
-import sign from '../../utils/ethereum';
+// import sign from '../../utils/ethereum';
 
 const UserModel = types.model("User").props({
   id: types.maybeNull(types.number),
@@ -26,12 +26,19 @@ const FundingModel = types.model("Funding").props({
   tokens_amount: types.maybeNull(types.number),
 })
 
+const wait = (ms) => new Promise((res) => {
+  setTimeout(() => {
+    res()
+  }, ms)
+})
+
 export const FundingsStoreModel = types.model("FundingsStore").props({
   fundings: types.optional(types.array(FundingModel), []),
   investId: types.maybeNull(types.number),
   investAmount: types.maybeNull(types.string),
   invested: types.maybeNull(types.boolean),
   confirmationNeeded: types.maybeNull(types.boolean),
+  goToNfc: types.maybeNull(types.boolean),
   password: types.maybeNull(types.string),
   tokenToSign: types.maybeNull(types.string),
   idToSign: types.maybeNull(types.number),
@@ -59,13 +66,20 @@ export const FundingsStoreModel = types.model("FundingsStore").props({
     self.confirmationWithNfcStatus = 'pending'
     self.password = password
     self.confirmationNeeded = false
+    self.goToNfc = true
   },
   waitForNfc: flow(function*() {
-    const data = yield sign('test123', self.tokenToSign);
+    // const data = yield sign('test123', self.tokenToSign);
     const env: Environment = getEnv(self);
-    yield env.api.sign(self.idToSign, data.signature);
+    // yield env.api.sign(self.idToSign, data.signature);
+    yield wait(5000)
+    yield env.api.sign(self.idToSign);
+    self.goToNfc = false;
     self.confirmationWithNfcStatus = 'done'
-  })
+  }),
+  reset() {
+    self.confirmationWithNfcStatus = 'pending'
+  }
 }))
 
 export interface FundingsStore extends Instance<typeof FundingsStoreModel> {}
