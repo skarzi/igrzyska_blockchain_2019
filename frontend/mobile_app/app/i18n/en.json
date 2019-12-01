@@ -10,7 +10,9 @@
   "welcomeScreen": {
     "poweredBy": "POWERED BY BONB",
     "readyForLaunch": "Ready for launch.",
-    "continue": "CONTINUE"
+    "continue": "CONTINUE",
+    "confirm": "CONFIRM",
+    "goToMain": "GO TO START"
   },
   "demoScreen": {
     "howTo": "HOW TO",

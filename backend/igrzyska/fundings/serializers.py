@@ -22,6 +22,7 @@ class FundingEntrySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['token_price'] = validated_data['funding'].token_price
+        validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
 
 

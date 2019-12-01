@@ -1,11 +1,19 @@
 import createNativeStackNavigator from "react-native-screens/createNativeStackNavigator"
 import {
   MainScreen,
+  ConfirmScreen,
+  FundListScreen,
+  ConfirmWithNfcScreen,
+  SuccessScreen
 } from "../screens"
 
 export const PrimaryNavigator = createNativeStackNavigator(
   {
     main: { screen: MainScreen },
+    confirm: { screen: ConfirmScreen },
+    confirmWithNfc: { screen: ConfirmWithNfcScreen },
+    fundList: { screen: FundListScreen },
+    success: { screen: SuccessScreen }
   },
   {
     headerMode: "none",
@@ -19,4 +27,4 @@ export const PrimaryNavigator = createNativeStackNavigator(
  * Anything not on this list will be a standard `back` action in
  * react-navigation.
  */
-export const exitRoutes: string[] = ["welcome"]
+export const exitRoutes: string[] = []
