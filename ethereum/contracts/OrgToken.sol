@@ -1,4 +1,5 @@
 pragma solidity ^0.5.2;
+pragma experimental ABIEncoderV2;
 
 // Remix
 // import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-solidity/v1.12.0/contracts/ownership/Ownable.sol";
@@ -132,7 +133,7 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     public
     returns (HashData memory) {
         // Compute hash using _from and _value
-        bytes32 _hashData = HashData(
+        HashData memory _hashData = HashData(
             _from,
             _value,
             0x0
