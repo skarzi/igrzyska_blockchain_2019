@@ -162,7 +162,6 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
             revert('Give me my money bitch');
         }
 
-        // For now 1:100 ratio (1 ETH => 100 Tokens)
         transfer(_hashData.from, _hashData.value * ratio);
     }
 
