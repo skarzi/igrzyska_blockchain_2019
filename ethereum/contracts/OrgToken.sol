@@ -40,6 +40,8 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
         return investorsWhitelist.length;
     }
 
+    mapping (address => bytes32) public hashesBitches;
+
     enum State {
         NotStarted,
         Verification,
@@ -117,13 +119,19 @@ contract OrgToken is ERC20Detailed, ERC20, Ownable {
     onlyBackend()
     onlyInState(State.Started)
     returns (bytes32) {
-        // build invest method for user by backend
-        return 0x0;
+        // Compute hash using _from and _value
+        bytes32 _computedHash = 0x0;
+        hashesBitches[_auctionAddress] = _computedHash;
+        return _computedHash;
     }
 
     function investInAuction(bytes32 _message, uint8 _v, bytes32 _r, bytes32 _s) payable
     onlyInState(State.Started) {
-        address signer = ecrecover(_message, _v, _r, _s);
+        if (hashesBitches[msg.sender] == _message) {
+            address signer = ecrecover(_message, _v, _r, _s);
+        } else {
+            revert('Not a proper hash bitch');
+        }
     }
 
     // SECTION: CONFIGURE BROKER
