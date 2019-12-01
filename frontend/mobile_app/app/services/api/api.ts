@@ -99,4 +99,48 @@ export class Api {
       return { kind: "bad-data" }
     }
   }
+
+  async getFundings(): Promise<Types.GetFundings> {
+    const response: ApiResponse<any> = await this.apisauce.get(`/fundings/`);
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return null;
+  }
+
+  async invest(fundingId, amount): Promise<Types.SignResult> {
+    const response: ApiResponse<Types.SignResult> = await this.apisauce.post(`/fundings/entries/`, {
+      tokens_amount: amount,
+      funding: fundingId,
+      token_price: '1'
+    }, {
+      headers: {
+        Authorization: 'Token c3bef782426cb533a3ecca8b8e0716067235ca4d'
+      }
+    });
+
+    if (response.status === 201) {
+      return response.data;
+    }
+
+    return null;
+  }
+
+  async sign(id, token) {
+    const response = await this.apisauce.post(`/fundings/entries/${id}/complete/`, {
+      signed_token: token
+    }, {
+      headers: {
+        Authorization: 'Token c3bef782426cb533a3ecca8b8e0716067235ca4d'
+      }
+    });
+
+    if (response.status === 201) {
+      return { kind: 'ok' }
+    }
+
+    return null;
+  }
 }

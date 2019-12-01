@@ -1,9 +1,10 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView, } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
-import { Button, Header, Screen, Text, Wallpaper } from "../../components"
+import { observer } from 'mobx-react-lite';
+import { Button, Header, Screen, Text, Wallpaper, TextField } from "../../components"
 import { color, spacing } from "../../theme"
-const bowserLogo = require("./bowser.png")
+import { useStores } from "../../models/root-store"
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -76,16 +77,23 @@ const FOOTER_CONTENT: ViewStyle = {
 const INPUT_STYLE: TextStyle = {
   color: color.text
 }
-const MARGIN_TOP: ViewStyle = {
-  marginTop: 15
-}
 
-export interface MainScreenProps extends NavigationScreenProps<{}> {}
+export interface ConfirmScreenProps extends NavigationScreenProps<{}> {}
 
-export const MainScreen: React.FunctionComponent<MainScreenProps> = props => {
-  // const nextScreen = React.useMemo(() => () => props.navigation.navigate("fundList"), [
+export const ConfirmScreen: React.FunctionComponent<ConfirmScreenProps> = observer(props => {
+  // const nextScreen = React.useMemo(() => () => props.navigation.navigate("demo"), [
   //   props.navigation,
   // ])
+  const { fundingsStore, navigationStore } = useStores()
+
+  const [password, setPassword] = React.useState('');
+  const handleConfirm = () => {
+    fundingsStore.setPassword(password)
+  }
+
+  if (fundingsStore.password !== '' && fundingsStore.password !== null) {
+    navigationStore.navigateTo('confirmWithNfc')
+  }
 
   return (
     <View style={FULL}>
@@ -95,11 +103,20 @@ export const MainScreen: React.FunctionComponent<MainScreenProps> = props => {
         <Text style={TITLE_WRAPPER}>
           <Text style={TITLE} text="ESFP" />
         </Text>
-        <Image source={bowserLogo} style={BOWSER} />
-        <Text style={[TITLE_WRAPPER, MARGIN_TOP]}>
-          <Text style={CONTENT}>
-            Go to next screen to see possible auctions
-          </Text>
+
+        <TextField
+          inputStyle={INPUT_STYLE}
+          label="Your password"
+          autoCompleteType="off"
+          secureTextEntry={true}
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={password}
+          onChangeText={setPassword}
+        />
+        <Text style={CONTENT}>
+          Your password will be used to confirm your identity
+          with use of NFC card.
         </Text>
       </Screen>
       <SafeAreaView style={FOOTER}>
@@ -107,11 +124,11 @@ export const MainScreen: React.FunctionComponent<MainScreenProps> = props => {
           <Button
             style={CONTINUE}
             textStyle={CONTINUE_TEXT}
-            tx="welcomeScreen.continue"
-            onPress={() => props.navigation.navigate('fundList')}
+            tx="welcomeScreen.confirm"
+            onPress={handleConfirm}
           />
         </View>
       </SafeAreaView>
     </View>
   )
-}
+})

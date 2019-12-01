@@ -17,7 +17,7 @@ export const FundEntries = types.model('FundEntry', {
 
 export const FundModel = types.model('Fund', {
   name: types.maybeNull(types.string),
-  tokens: types.maybeNull(types.integer),
+  tokens: types.maybeNull(types.string),
   tokenPrice: types.maybeNull(types.string),
   equity: types.maybeNull(types.string),
   id: types.maybeNull(types.number),
@@ -77,13 +77,13 @@ export const FundStoreModel = types
       self.state = 'submitted';
       self.fund.entries.replace(response.entries);
       self.fund.entriesFetched = Date.now();
-      self.fund.tokens = response.tokens_amount;
+      self.fund.tokens = `${response.tokens_amount}`;
     }),
     setFundName(name) {
       self.fund.name = name;
     },
     setFundTokens(tokens) {
-      self.fund.tokens = parseInt(tokens);
+      self.fund.tokens = tokens;
     },
     setFundTokenPrice(tokenPrice) {
       self.fund.tokenPrice = tokenPrice;

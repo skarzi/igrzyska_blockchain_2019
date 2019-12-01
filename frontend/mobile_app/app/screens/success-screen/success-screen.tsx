@@ -3,7 +3,7 @@ import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "rea
 import { NavigationScreenProps } from "react-navigation"
 import { Button, Header, Screen, Text, Wallpaper } from "../../components"
 import { color, spacing } from "../../theme"
-const bowserLogo = require("./bowser.png")
+const bowserLogo = require("./greenCheckmark.png")
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -80,9 +80,9 @@ const MARGIN_TOP: ViewStyle = {
   marginTop: 15
 }
 
-export interface MainScreenProps extends NavigationScreenProps<{}> {}
+export interface SuccessScreenProps extends NavigationScreenProps<{}> {}
 
-export const MainScreen: React.FunctionComponent<MainScreenProps> = props => {
+export const SuccessScreen: React.FunctionComponent<SuccessScreenProps> = props => {
   // const nextScreen = React.useMemo(() => () => props.navigation.navigate("fundList"), [
   //   props.navigation,
   // ])
@@ -98,7 +98,7 @@ export const MainScreen: React.FunctionComponent<MainScreenProps> = props => {
         <Image source={bowserLogo} style={BOWSER} />
         <Text style={[TITLE_WRAPPER, MARGIN_TOP]}>
           <Text style={CONTENT}>
-            Go to next screen to see possible auctions
+            Your transaction is done!
           </Text>
         </Text>
       </Screen>
@@ -107,8 +107,8 @@ export const MainScreen: React.FunctionComponent<MainScreenProps> = props => {
           <Button
             style={CONTINUE}
             textStyle={CONTINUE_TEXT}
-            tx="welcomeScreen.continue"
-            onPress={() => props.navigation.navigate('fundList')}
+            tx="welcomeScreen.goToMain"
+            onPress={() => props.navigation.navigate('main')}
           />
         </View>
       </SafeAreaView>

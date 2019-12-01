@@ -18,9 +18,9 @@ export async function setupRootStore() {
 
   const rootStore = RootStoreModel.create(data, env);
 
-  onSnapshot(rootStore, snapshot =>
-    localStorage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot)),
-  );
+  // onSnapshot(rootStore, snapshot =>
+  //   localStorage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot)),
+  // );
 
   return rootStore;
 }
